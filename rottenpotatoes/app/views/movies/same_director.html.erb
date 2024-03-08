@@ -1,0 +1,12 @@
+<h2>Movies by the same director</h2>
+
+<% if @movies.any? %>
+  <ul>
+    <% @movies.each do |movie| %>
+      <li><%= link_to movie.title, movie_path(movie) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No other movies by this director.</p>
+<% end %>
+

@@ -23,3 +23,46 @@ Then /I should see all the movies/ do
     step %{I should see "#{movie.title}"}
   end
 end
+
+
+
+
+
+When('I go to the edit page for {string}') do |title|
+  movie = Movie.find_by(title: title)
+  visit edit_movie_path(movie)
+end
+When('I fill in {string} with {string}') do |field, value|
+  fill_in field, with: value
+end
+When('I press {string}') do |button_name|
+  click_button(button_name)
+end
+Then('the director of {string} should be {string}') do |title, director|
+  movie = Movie.find_by(title: title)
+  expect(movie.director).to eq(director)
+end
+Given('I am on the details page for {string}') do |title|
+  movie = Movie.find_by(title: title)
+  visit movie_path(movie)
+end
+When('I follow {string}') do |link_text|
+  click_link(link_text)
+end
+Then('I should be on the Similar Movies page for {string}') do |title|
+  movie = Movie.find_by(title: title)
+  expect(page).to have_current_path(same_director_movies_path(movie.director))
+end
+
+Then('I should see {string}') do |string|
+  expect(page).to have_content(string)
+end
+
+Then('I should not see {string}') do |string|
+  expect(page).to have_no_content(string)
+end
+
+Then('I should be on the home page') do
+  expect(page).to have_current_path(root_path)
+end
+
