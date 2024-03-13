@@ -36,8 +36,6 @@ class MoviesController < ApplicationController
     if @movie.update(movie_params)
       # Include the movie's title in the flash notice
       redirect_to @movie, notice: "#{@movie.title} was successfully updated."
-    else
-      render :edit
     end
   end
 
