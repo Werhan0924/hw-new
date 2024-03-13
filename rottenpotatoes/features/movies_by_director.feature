@@ -32,3 +32,9 @@ Scenario: can't find movies with the same director if we don't know the director
   When  I follow "Find Movies With Same Director"
   Then  I should be on the home page
   And   I should see "'Alien' has no director info"
+
+Scenario: Show movies released after specific year
+    Given I am on the homepage
+    When I filter movies by release year "1982"
+    Then I should see "Blade Runner"
+    And I should not see "Star Wars"

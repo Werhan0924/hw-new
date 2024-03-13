@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Movie < ActiveRecord::Base
   def self.with_same_director(id)
     movie = Movie.find(id)
@@ -5,5 +7,4 @@ class Movie < ActiveRecord::Base
 
     Movie.where(director: movie.director)
   end
-
 end

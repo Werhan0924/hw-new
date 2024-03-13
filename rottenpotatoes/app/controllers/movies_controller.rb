@@ -1,5 +1,6 @@
-class MoviesController < ApplicationController
+# frozen_string_literal: true
 
+class MoviesController < ApplicationController
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -7,7 +8,11 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @movies = if params[:release_year_filter].present?
+                Movie.where("strftime('%Y', release_date) = ?", params[:release_year_filter])
+              else
+                Movie.all
+              end
   end
 
   def new
@@ -28,12 +33,12 @@ class MoviesController < ApplicationController
     @movie = Movie.find(params[:id])
     @movie.director = params[:director] if params[:director].present?
     if @movie.update(movie_params)
-      redirect_to @movie, notice: 'Movie was successfully updated.'
+      # Include the movie's title in the flash notice
+      redirect_to @movie, notice: "#{@movie.title} was successfully updated."
     else
       render :edit
     end
   end
-
 
   def destroy
     @movie = Movie.find(params[:id])
@@ -55,6 +60,7 @@ class MoviesController < ApplicationController
   end
 
   private
+
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date, :director)
   end

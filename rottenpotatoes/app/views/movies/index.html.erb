@@ -3,6 +3,15 @@
 
 <%#  Part 2: Start here... %>
 
+<%= form_with(url: movies_path, method: :get, local: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :release_year_filter, 'Filter by release year' %>
+    <%= form.text_field :release_year_filter, value: params[:release_year_filter], class: 'form-control' %>
+  </div>
+  <%= form.submit 'Apply Filter', class: 'btn btn-default' %>
+<% end %>
+
+
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
@@ -23,9 +32,6 @@
         </td>
         <td>
           <%= movie.release_date %>
-        </td>
-        <td>
-          <%= link_to "More about #{movie.title}", movie_path(movie) %>
         </td>
       </tr>
     <% end %>
