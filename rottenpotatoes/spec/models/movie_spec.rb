@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Movie, type: :model do
-  before(:all) do
+  before do
     if described_class.where(title: 'Big Hero 6').empty?
       described_class.create(title: 'Big Hero 6',
                              rating: 'PG', release_date: '2014-11-07')

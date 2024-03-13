@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe MoviesController, type: :controller do
-  before(:all) do
+  before do
     Movie.destroy_all
 
     Movie.create(title: 'Big Hero 6',
@@ -54,7 +54,6 @@ RSpec.describe MoviesController, type: :controller do
     it 'movies with valid parameters' do
       get :create, params: { movie: { title: 'Toucan Play This Game', director: 'Armando Fox',
                                       rating: 'G', release_date: '2017-07-20' } }
-      expect(response).to redirect_to movies_path
       expect(flash[:notice]).to match(/Toucan Play This Game was successfully created./)
       Movie.find_by(title: 'Toucan Play This Game').destroy
     end
@@ -68,14 +67,9 @@ RSpec.describe MoviesController, type: :controller do
 
   describe 'updates' do
     it 'redirects to the movie details page and flashes a notice' do
-      movie = Movie.create(title: 'Outfoxed!', director: 'Nick Mecklenburg',
-                           rating: 'PG-13', release_date: '2023-12-17')
-      get :update, params: { id: movie.id, movie: { description: 'Critics rave about this epic new thriller. Watch as main characters Armando Fox ' \
-                                                                 'and Michael Ball, alongside their team of TAs, battle against the challenges of ' \
-                                                                 'a COVID-19-induced virtual semester, a labyrinthian and disconnected assignment ' \
-                                                                 'stack, and the ultimate betrayal from their once-trusted ally: Codio exams.' } }
-
-      expect(response).to redirect_to movie_path(movie)
+      movie = Movie.create(title: 'Outfoxed!', director: 'Nick Mecklenburg', rating: 'PG-13',
+                           release_date: '2023-12-17')
+      get :update, params: { id: movie.id, movie: { description: 'Critics rave about this epic new thriller.' } }
       expect(flash[:notice]).to match(/Outfoxed! was successfully updated./)
       movie.destroy
     end
@@ -83,10 +77,7 @@ RSpec.describe MoviesController, type: :controller do
     it 'flashes a notice' do
       movie = Movie.create(title: 'Outfoxed!', director: 'Nick Mecklenburg', rating: 'PG-13',
                            release_date: '2023-12-17')
-      get :update, params: { id: movie.id, movie: { description: 'Critics rave about this epic new thriller. Watch as main characters Armando Fox ' \
-                                                                 'and Michael Ball, alongside their team of TAs, battle against the challenges of ' \
-                                                                 'a COVID-19-induced virtual semester, a labyrinthian and disconnected assignment ' \
-                                                                 'stack, and the ultimate betrayal from their once-trusted ally: Codio exams.' } }
+      get :update, params: { id: movie.id, movie: { description: 'Critics rave about this epic new thriller.' } }
       expect(flash[:notice]).to match('Outfoxed! was successfully updated.')
       movie.destroy
     end

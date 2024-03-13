@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# app/models/movie.rb
 class Movie < ActiveRecord::Base
   def self.with_same_director(id)
     movie = Movie.find(id)
