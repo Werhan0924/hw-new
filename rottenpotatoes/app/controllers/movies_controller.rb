@@ -42,25 +42,20 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-  private
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
-
-
-  def movie_params
-    params.require(:movie).permit(:title, :rating, :release_date, :description, :director)
-  end
   def same_director
-    # Find the movie by id to get the director's name
     movie = Movie.find(params[:id])
-    
-    if movie.director.blank?
-      redirect_to movies_path, alert: "'#{movie.title}' has no director info"
-    else
-      # Find other movies by the same director
-      @movies = Movie.where(director: movie.director).where.not(id: movie.id)
-      puts "@movies is nil" if @movies.nil? # Debugging output
-      render :same_director # assuming you have a view template `same_director.html.erb`
-    end
+    @director = movie.director
+    @movies = Movie.with_same_director(movie.id)
+    return unless @movies.nil?
+
+    flash[:warning] = "'#{movie.title}' has no director info"
+    redirect_to movies_path
+  end
+
+  private
+  def movie_params
+    params.require(:movie).permit(:title, :rating, :description, :release_date, :director)
   end
 end

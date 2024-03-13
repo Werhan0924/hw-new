@@ -1,0 +1,19 @@
+<h2>Movies directed by <em><%= @director %></em></h2>
+
+<table>
+	<tr>
+		<th>Movie Title</th>
+		<th>Rating</th>
+		<th>Release Date</th>
+	</tr>
+	
+	<% @movies.each do |movie| %>
+		<tr>
+			<td> <%=movie.title%> </td>
+			<td> <%=movie.rating%> </td>
+			<td> <%=movie.release_date%> </td>
+			<td> <%= link_to "More about #{movie.title}", movie_path(movie) %> </td>
+		</tr>		
+	<% end %>
+
+</table>

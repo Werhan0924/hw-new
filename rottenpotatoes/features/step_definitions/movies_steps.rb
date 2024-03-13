@@ -51,7 +51,7 @@ When('I follow {string}') do |link_text|
 end
 Then('I should be on the Similar Movies page for {string}') do |title|
   movie = Movie.find_by(title: title)
-  expect(page).to have_current_path(same_director_movies_path(movie.director))
+  expect(page).to have_current_path(same_director_movies_path(movie))
 end
 
 Then('I should see {string}') do |string|
@@ -63,6 +63,6 @@ Then('I should not see {string}') do |string|
 end
 
 Then('I should be on the home page') do
-  expect(page).to have_current_path(root_path)
+  expect(page).to have_current_path(movies_path)
 end
 
